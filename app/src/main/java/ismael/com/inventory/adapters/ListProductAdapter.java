@@ -22,10 +22,10 @@ public class ListProductAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View v = LayoutInflater.from(context).inflate(R.layout.fragment_listproducts, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.listitem_product, parent, false);
         ProductHolder holder = new ProductHolder();
-        holder.serial = (TextView) v.findViewById(R.id.wrap);
-        holder.shortName = (TextView) v.findViewById(R.id.wrap);
+        holder.serial = (TextView) v.findViewById(R.id.productitem_serial);
+        holder.shortName = (TextView) v.findViewById(R.id.productitem_shortname);
         v.setTag(holder);
         return v;
     }
@@ -33,8 +33,8 @@ public class ListProductAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ProductHolder holder = (ProductHolder) view.getTag();
-        //holder.serial.setText();
-        //holder.shortName.setText();
+        holder.serial.setText(cursor.getString(1));
+        holder.shortName.setText(cursor.getString(2));
     }
 
     @Override

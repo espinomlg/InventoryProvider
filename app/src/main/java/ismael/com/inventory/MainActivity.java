@@ -7,6 +7,8 @@ import ismael.com.inventory.fragments.ListProductFragment;
 
 public class MainActivity extends AppCompatActivity implements ListProductFragment.ListProductListener{
 
+    private ListProductFragment listproduct;
+
     /*Se inicializa el fragment que permite añadir un product*/
     @Override
     public void onAddProductListener() {
@@ -17,5 +19,10 @@ public class MainActivity extends AppCompatActivity implements ListProductFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(savedInstanceState == null){
+            listproduct = ListProductFragment.newInstance(null);
+            getSupportFragmentManager().beginTransaction().add(R.id.main_container, listproduct).commit();
+        }
     }
 }

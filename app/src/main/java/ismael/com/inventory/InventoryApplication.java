@@ -2,6 +2,7 @@ package ismael.com.inventory;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import ismael.com.inventory.DB.DatabaseHelper;
 
@@ -17,6 +18,7 @@ public class InventoryApplication extends Application {
     public void onCreate() {
         super.onCreate();
         DatabaseHelper.getInstance().openDatabase();
+
     }
 
     public InventoryApplication(){

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,15 @@ public class ListProductFragment extends ListFragment implements ProductPresente
         void onAddProductListener();
     }
 
+
+    public static ListProductFragment newInstance(Bundle args){
+        ListProductFragment fragment = new ListProductFragment();
+        if(args != null)
+            fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -44,6 +55,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ProductPresenterImpl(getContext(), this);
+        adapter = new ListProductAdapter(getContext(),null, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         //se guarda el fragment en la pila de llamadas
         //setRetainInstance(true);
     }
