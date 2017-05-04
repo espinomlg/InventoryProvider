@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,6 @@ import ismael.com.inventory.presenter.ProductPresenterImpl;
 
 public class ListProductFragment extends ListFragment implements ProductPresenter.View {
 
-    private static final int CURSOR_ID = 1;
-
     private ListProductListener callback;
     private ProductPresenter presenter;
     private ListProductAdapter adapter;
@@ -31,7 +27,6 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     public interface ListProductListener{
         void onAddProductListener();
     }
-
 
     public static ListProductFragment newInstance(Bundle args){
         ListProductFragment fragment = new ListProductFragment();
@@ -55,7 +50,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ProductPresenterImpl(getContext(), this);
-        adapter = new ListProductAdapter(getContext(),null, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        adapter = new ListProductAdapter(getContext(),null);
         //se guarda el fragment en la pila de llamadas
         //setRetainInstance(true);
     }
@@ -63,7 +58,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     @Override
     public void onStart() {
         super.onStart();
-        getLoaderManager().initLoader(CURSOR_ID, null, (ProductPresenterImpl)presenter);
+        presenter.getAllProducts(getLoaderManager());
     }
 
     @Nullable

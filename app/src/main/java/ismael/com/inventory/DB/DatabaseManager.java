@@ -12,14 +12,19 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private SQLiteDatabase db;
 
-    public static DatabaseManager getInstance(){
+    public static synchronized DatabaseManager getInstance(){
         if(instance == null)
-            instance = new DatabaseManager();
+            throw new IllegalStateException("database manager is null, call initialize()");
 
         return instance;
     }
 
-    private DatabaseManager(){
+    public static synchronized void initialize(DatabaseManager dm){
+        if(instance == null)
+            instance = dm;
+    }
+
+    public DatabaseManager(){
         db = DatabaseHelper.getInstance().openDatabase();
     }
 

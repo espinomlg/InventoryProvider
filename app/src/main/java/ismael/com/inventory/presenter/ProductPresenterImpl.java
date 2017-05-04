@@ -15,6 +15,8 @@ import ismael.com.inventory.interfaces.ProductPresenter;
 
 public class ProductPresenterImpl implements ProductPresenter, LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final int CURSOR_ID = 1;
+
     private Context context;
     private ProductPresenter.View view;
 
@@ -25,7 +27,12 @@ public class ProductPresenterImpl implements ProductPresenter, LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new ListProductCursor(context);
+        Loader<Cursor> loader = null;
+        switch (id){
+            case CURSOR_ID:
+                loader = new ListProductCursor(context);
+        }
+        return loader;
     }
 
     @Override
@@ -36,5 +43,10 @@ public class ProductPresenterImpl implements ProductPresenter, LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         view.setCursor(null);
+    }
+
+    @Override
+    public void getAllProducts(LoaderManager lm) {
+        lm.initLoader(CURSOR_ID, null, this);
     }
 }

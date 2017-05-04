@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ismael.com.inventory.R;
+import ismael.com.inventory.models.Product;
 
 /**
  * Created by espino on 24/04/17.
@@ -16,8 +17,8 @@ import ismael.com.inventory.R;
 
 public class ListProductAdapter extends CursorAdapter {
 
-    public ListProductAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public ListProductAdapter(Context context, Cursor c) {
+        super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
 
     @Override
@@ -38,12 +39,19 @@ public class ListProductAdapter extends CursorAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Product getItem(int position) {
         getCursor().moveToPosition(position);
-        return super.getItem(position);
+
+        Product p = new Product(getCursor().getInt(0),
+                getCursor().getString(1),
+                getCursor().getString(2),
+                getCursor().getString(3),
+                String.valueOf(getCursor().getInt(4)),
+                String.valueOf(getCursor().getInt(4)),
+                String.valueOf(getCursor().getInt(4)));
+
+        return p;
     }
-
-
 
     class ProductHolder{
         TextView serial, shortName;

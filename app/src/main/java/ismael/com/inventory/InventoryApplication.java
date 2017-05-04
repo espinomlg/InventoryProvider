@@ -2,9 +2,8 @@ package ismael.com.inventory;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
-import ismael.com.inventory.DB.DatabaseHelper;
+import ismael.com.inventory.DB.DatabaseManager;
 
 /**
  * Created by espino on 20/04/17.
@@ -17,8 +16,7 @@ public class InventoryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DatabaseHelper.getInstance().openDatabase();
-
+        DatabaseManager.initialize(new DatabaseManager());
     }
 
     public InventoryApplication(){
