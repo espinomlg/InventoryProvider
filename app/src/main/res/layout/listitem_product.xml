@@ -17,4 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="shortname" />
+
+    <TextView
+        android:id="@+id/productitem_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="category" />
 </LinearLayout>

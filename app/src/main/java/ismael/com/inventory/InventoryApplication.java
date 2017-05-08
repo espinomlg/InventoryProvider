@@ -3,6 +3,7 @@ package ismael.com.inventory;
 import android.app.Application;
 import android.content.Context;
 
+import ismael.com.inventory.DB.DatabaseHelper;
 import ismael.com.inventory.DB.DatabaseManager;
 
 /**
@@ -16,6 +17,7 @@ public class InventoryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        DatabaseHelper.getInstance().openDatabase();
         DatabaseManager.initialize(new DatabaseManager());
     }
 

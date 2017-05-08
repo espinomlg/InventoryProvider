@@ -14,7 +14,7 @@ import ismael.com.inventory.InventoryApplication;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "inventory.db";
     private static DatabaseHelper instance;
     private SQLiteDatabase db;
@@ -49,6 +49,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('001', 'Monitor', 'Monitor del ordenador', 1, 1, 1), " +
                     "('002', 'Teclado', 'Teclado del ordenador', 1, 1, 1), " +
                     "('003', 'Ratón', 'Ratón del ordenador', 1, 1, 1);");
+            sqLiteDatabase.execSQL("insert into category(name, sortname, description) values\n" +
+                    "('periféricos', 'per', 'suplementos para el pc'),\n" +
+                    "('componentes', 'com', 'componentes para el pc');");
+            sqLiteDatabase.execSQL("insert into subcategory(categoryid, name, sortname, description)\n" +
+                    "values (0, 'pantallas', 'pant', 'monitores para pc'),\n" +
+                    "(0, 'ratones', 'rat', 'ratones para pc'),\n" +
+                    "(1, 'microprocesadores', 'micro', 'procesadores para pc'),\n" +
+                    "(1, 'memoria RAM', 'RAM', 'memoria RAM para pc');");
+            sqLiteDatabase.execSQL("insert into productclass(description) values\n" +
+                    "('algo'),\n" +
+                    "('que no se que es');");
 
             sqLiteDatabase.setTransactionSuccessful();
         } catch (SQLiteException ex) {

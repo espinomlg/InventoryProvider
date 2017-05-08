@@ -27,6 +27,7 @@ public class ListProductAdapter extends CursorAdapter {
         ProductHolder holder = new ProductHolder();
         holder.serial = (TextView) v.findViewById(R.id.productitem_serial);
         holder.shortName = (TextView) v.findViewById(R.id.productitem_shortname);
+        holder.category = (TextView) v.findViewById(R.id.productitem_category);
         v.setTag(holder);
         return v;
     }
@@ -36,6 +37,7 @@ public class ListProductAdapter extends CursorAdapter {
         ProductHolder holder = (ProductHolder) view.getTag();
         holder.serial.setText(cursor.getString(1));
         holder.shortName.setText(cursor.getString(2));
+        holder.category.setText(String.valueOf(cursor.getInt(4)));
     }
 
     @Override
@@ -47,13 +49,13 @@ public class ListProductAdapter extends CursorAdapter {
                 getCursor().getString(2),
                 getCursor().getString(3),
                 String.valueOf(getCursor().getInt(4)),
-                String.valueOf(getCursor().getInt(4)),
-                String.valueOf(getCursor().getInt(4)));
+                String.valueOf(getCursor().getInt(5)),
+                String.valueOf(getCursor().getInt(6)));
 
         return p;
     }
 
     class ProductHolder{
-        TextView serial, shortName;
+        TextView serial, shortName, category;
     }
 }

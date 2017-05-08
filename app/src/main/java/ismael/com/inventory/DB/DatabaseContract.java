@@ -71,17 +71,20 @@ public class DatabaseContract {
 
     public static class SubCategoryEntry implements BaseColumns{
         public static final String TABLE_NAME = "subcategory",
+                COLUMN_CATEGORYID = "categoryid",
                 COLUMN_NAME = "name",
                 COLUMN_SORTNAME = "sortname",
                 COLUMN_DESCRIPTION = "description",
 
                 SQL_CREATE_ENTRY = String.format("CREATE TABLE %s " +
                                 "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "%s INTEGER NOT NULL," +
                                 "%s TEXT UNIQUE NOT NULL," +
                                 "%s TEXT UNIQUE NOT NULL," +
                                 "%s TEXT NOT NULL)",
                         TABLE_NAME,
                         BaseColumns._ID,
+                        COLUMN_CATEGORYID,
                         COLUMN_NAME,
                         COLUMN_SORTNAME,
                         COLUMN_DESCRIPTION),
@@ -89,7 +92,7 @@ public class DatabaseContract {
                 SQL_DELETE_ENTRY = String.format("DROP TABLE %s", TABLE_NAME);
 
         public static final String[] ALL_COLUMNS = {
-                _ID, COLUMN_NAME, COLUMN_SORTNAME, COLUMN_DESCRIPTION
+                _ID, COLUMN_CATEGORYID, COLUMN_NAME, COLUMN_SORTNAME, COLUMN_DESCRIPTION
         };
     }
 

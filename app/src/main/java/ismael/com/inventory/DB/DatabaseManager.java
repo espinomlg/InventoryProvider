@@ -32,4 +32,14 @@ public class DatabaseManager {
         return db.query(DatabaseContract.ProductEntry.TABLE_NAME, DatabaseContract.ProductEntry.ALL_COLUMNS,
                 null,null,null,null,null);
     }
+
+    public Cursor getAllCategories(){
+        return db.query(DatabaseContract.CategoryEntry.TABLE_NAME, DatabaseContract.CategoryEntry.ALL_COLUMNS,
+                null,null,null,null,null);
+    }
+
+    public Cursor getAllSubcategoriesFrom(String[] args){
+        return db.query(DatabaseContract.SubCategoryEntry.TABLE_NAME, DatabaseContract.SubCategoryEntry.ALL_COLUMNS,
+                "categoryid = ?", args, null,null,null);
+    }
 }
