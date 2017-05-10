@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import ismael.com.inventory.DB.DatabaseManager;
 import ismael.com.inventory.cursors.ListProductCursor;
 import ismael.com.inventory.interfaces.ProductPresenter;
+import ismael.com.inventory.models.Product;
 
 /**
  * Created by espino on 24/04/17.
@@ -48,5 +50,10 @@ public class ProductPresenterImpl implements ProductPresenter, LoaderManager.Loa
     @Override
     public void getAllProducts(LoaderManager lm) {
         lm.initLoader(CURSOR_ID, null, this);
+    }
+
+    @Override
+    public void deleteProduct(Product p) {
+        DatabaseManager.getInstance().deleteProduct(p);
     }
 }

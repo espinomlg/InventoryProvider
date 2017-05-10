@@ -1,18 +1,25 @@
 package ismael.com.inventory.fragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import ismael.com.inventory.R;
 import ismael.com.inventory.adapters.ListProductAdapter;
 import ismael.com.inventory.interfaces.ProductPresenter;
+import ismael.com.inventory.models.Product;
 import ismael.com.inventory.presenter.ProductPresenterImpl;
 
 /**
@@ -26,6 +33,8 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     private ListProductListener callback;
     private ProductPresenter presenter;
     private ListProductAdapter adapter;
+
+    private Product p;
 
     public interface ListProductListener{
         void onAddProductListener();
@@ -77,6 +86,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        registerForContextMenu(getListView());
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,5 +100,47 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     @Override
     public void setCursor(Cursor c) {
         adapter.changeCursor(c);
+    }
+
+    public void reset(){
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        p = adapter.getItem(info.position);
+        menu.setHeaderTitle(adapter.getItem(info.position).getShortName());
+        inflater.inflate(R.menu.context_menu, menu);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.contextmenu_delete:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setTitle("are you sure?")
+                        .setMessage("you want to delete this product?")
+                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                presenter.deleteProduct(p);
+                            }
+                        })
+                        .setNegativeButton("no", null);
+                dialog.show();
+                break;
+
+            case R.id.contextmenu_edit:
+
+                break;
+        }
+
+        return true;
+
     }
 }
