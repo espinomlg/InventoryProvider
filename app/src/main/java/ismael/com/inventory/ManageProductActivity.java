@@ -57,7 +57,7 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle args = new Bundle();
-                args.putString("id", String.valueOf(i + 1));
+                args.putString("id", categoryAdapter.getItem(i));
                 presenter.getAllSubcategories(getSupportLoaderManager(), args);
             }
 
