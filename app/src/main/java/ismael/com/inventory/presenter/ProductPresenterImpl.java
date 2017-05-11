@@ -49,7 +49,7 @@ public class ProductPresenterImpl implements ProductPresenter, LoaderManager.Loa
 
     @Override
     public void getAllProducts(LoaderManager lm) {
-        lm.initLoader(CURSOR_ID, null, this);
+        lm.restartLoader(CURSOR_ID, null, this);
     }
 
     @Override

@@ -62,8 +62,7 @@ public class ManageProductPresenterImpl implements ManageProductPresenter, Loade
 
     @Override
     public void getAllSubcategories(LoaderManager lm, Bundle args) {
-        lm.destroyLoader(ManageProductPresenterImpl.SUBCATEGORYCURSOR_ID);
-        lm.initLoader(SUBCATEGORYCURSOR_ID, args, this);
+        lm.restartLoader(SUBCATEGORYCURSOR_ID, args, this);
     }
 
     @Override

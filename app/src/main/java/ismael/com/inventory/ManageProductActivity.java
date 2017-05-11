@@ -16,7 +16,6 @@ import android.widget.Spinner;
 
 import ismael.com.inventory.DB.DatabaseContract;
 import ismael.com.inventory.adapters.MySimpleCursorAdapter;
-import ismael.com.inventory.fragments.ManageProductFragment;
 import ismael.com.inventory.interfaces.ManageProductPresenter;
 import ismael.com.inventory.models.Product;
 import ismael.com.inventory.presenter.ManageProductPresenterImpl;
@@ -87,7 +86,6 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
                 p.setProductClass(productclass.getSelectedItem().toString());
 
                 presenter.addProduct(p);
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -128,10 +126,8 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
 
 
     private String checkData(String s){
-        if(!TextUtils.isEmpty(s))
-            return s;
-        else
-            return "";
+        return !TextUtils.isEmpty(s) ? s : "";
+
 
     }
 }

@@ -62,7 +62,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ProductPresenterImpl(getContext(), this);
-        adapter = new ListProductAdapter(getContext(),null);
+        adapter = new ListProductAdapter(getContext(), null);
         //se guarda el fragment en la pila de llamadas
         //setRetainInstance(true);
     }
@@ -102,10 +102,6 @@ public class ListProductFragment extends ListFragment implements ProductPresente
         adapter.changeCursor(c);
     }
 
-    public void reset(){
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -129,6 +125,7 @@ public class ListProductFragment extends ListFragment implements ProductPresente
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 presenter.deleteProduct(p);
+                                presenter.getAllProducts(getLoaderManager());
                             }
                         })
                         .setNegativeButton("no", null);
