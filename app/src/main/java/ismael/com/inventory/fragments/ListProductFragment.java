@@ -2,6 +2,7 @@ package ismael.com.inventory.fragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import ismael.com.inventory.ManageProductActivity;
 import ismael.com.inventory.R;
 import ismael.com.inventory.adapters.ListProductAdapter;
 import ismael.com.inventory.interfaces.ProductPresenter;
@@ -133,7 +135,10 @@ public class ListProductFragment extends ListFragment implements ProductPresente
                 break;
 
             case R.id.contextmenu_edit:
-
+                Intent i = new Intent(getContext(), ManageProductActivity.class);
+                i.putExtra("edit", true);
+                i.putExtra("product", adapter.getItem(((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position));
+                getActivity().startActivity(i);
                 break;
         }
 

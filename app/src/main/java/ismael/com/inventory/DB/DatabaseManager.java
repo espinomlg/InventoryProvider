@@ -3,6 +3,7 @@ package ismael.com.inventory.DB;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import ismael.com.inventory.models.Product;
 
@@ -32,8 +33,17 @@ public class DatabaseManager {
     }
 
     public Cursor getAllProducts(){
-        return db.query(DatabaseContract.ProductEntry.TABLE_NAME, DatabaseContract.ProductEntry.ALL_COLUMNS,
-                null,null,null,null,null);
+        String[] projection = {"product." + DatabaseContract.ProductEntry._ID, DatabaseContract.ProductEntry.COLUMN_SERIAL,
+                DatabaseContract.ProductEntry.COLUMN_SHORTNAME, "product." + DatabaseContract.ProductEntry.COLUMN_DESCRIPTION,
+                "category." + DatabaseContract.CategoryEntry.COLUMN_NAME, "subcategory." + DatabaseContract.SubCategoryEntry.COLUMN_NAME,
+                DatabaseContract.ProductEntry.COLUMN_PRODUCTCLASS};
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+        queryBuilder.setTables("product JOIN category ON product.category = category._id " +
+                "JOIN subcategory ON product.subcategory = subcategory._id");
+
+        return queryBuilder.query(db,projection,null,null,null,null,null);
     }
 
     public Cursor getAllCategories(){

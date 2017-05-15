@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,15 +34,15 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
 
     private ManageProductPresenter presenter;
     private MySimpleCursorAdapter categoryAdapter, subcategoryAdapter;
+    private ArrayAdapter<String> productClassAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_addproduct);
-
         inflate();
-
         presenter = new ManageProductPresenterImpl(this);
+
         categoryAdapter = new MySimpleCursorAdapter(getContext(),android.R.layout.simple_spinner_item, null,
                 new String[]{DatabaseContract.CategoryEntry.COLUMN_NAME},
                 new int[]{android.R.id.text1},
@@ -52,6 +53,10 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
                 new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
+        productClassAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                android.R.id.text1,
+                getResources().getStringArray(R.array.productclass));
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -59,6 +64,8 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
                 Bundle args = new Bundle();
                 args.putString("id", categoryAdapter.getItem(i));
                 presenter.getAllSubcategories(getSupportLoaderManager(), args);
+               // if(getIntent().getBooleanExtra("edit", false))
+               //
             }
 
             @Override
@@ -69,10 +76,7 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
 
         category.setAdapter(categoryAdapter);
         subcategory.setAdapter(subcategoryAdapter);
-        productclass.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,
-                android.R.id.text1,
-                getResources().getStringArray(R.array.productclass)));
+        productclass.setAdapter(productClassAdapter);
 
         action.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,11 +88,18 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
                 p.setCategory(categoryAdapter.getItem(category.getSelectedItemPosition()));
                 p.setSubcategory(subcategoryAdapter.getItem(category.getSelectedItemPosition()));
                 p.setProductClass(productclass.getSelectedItem().toString());
+                Log.e("add", "onClick: " +  subcategoryAdapter.getItem(category.getSelectedItemPosition()));
+                if(getIntent().getBooleanExtra("edit", false))
+                    presenter.editProduct(p);
+                else
+                    presenter.addProduct(p);
 
-                presenter.addProduct(p);
                 finish();
             }
         });
+
+        if(getIntent().getBooleanExtra("edit", false))
+            setProductData((Product) getIntent().getParcelableExtra("product"));
     }
 
     @Override
@@ -125,9 +136,24 @@ public class ManageProductActivity extends AppCompatActivity implements ManagePr
     }
 
 
-    private String checkData(String s){
+    private String checkData(String s) {
         return !TextUtils.isEmpty(s) ? s : "";
-
-
     }
+
+    private  void setProductData(Product p){
+        serial.getEditText().setText(p.getSerial());
+        shortname.getEditText().setText(p.getShortName());
+        description.getEditText().setText(p.getDescription());
+        productclass.setSelection(productClassAdapter.getPosition(p.getProductClass()));
+    }
+
+    private void setCategorySpinner(){
+        category.setSelection(categoryAdapter.findPosition(Integer.valueOf(((Product)getIntent().getParcelableExtra("product")).getCategory())));
+    }
+    private void setSubcategorySpinner(){
+        subcategory.setSelection(subcategoryAdapter.findPosition(Integer.valueOf(((Product)getIntent().getParcelableExtra("product")).getSubcategory())));
+    }
+
+
+
 }
